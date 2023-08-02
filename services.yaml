@@ -2,5 +2,6 @@ services:
 
   GP\Oxid\IdeHelper\Command\IdeHelper:
     tags:
-      - { name: console.command, command: 'gp:ide-helper' }
+      - { name: console.command, command: 'gp:ide:helper' }
     autowire: true
+    public: true
