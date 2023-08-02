@@ -1,0 +1,30 @@
+{
+    "name": "gp/oxid-ide-helper",
+    "description": "OXID eShop components for ith",
+    "license": "MIT",
+    "type": "oxideshop-component",
+    "version": "1.1.0",
+    "homepage": "https://www.itholics.de",
+    "keywords": [
+        "oxid",
+        "oxid-eshop",
+        "oxid-components",
+        "oxid-module",
+        "ide",
+        "helper"
+    ],
+    "extra": {
+        "oxideshop": {
+            "target-directory": "gp/ide-helper"
+        }
+    },
+    "require": {
+       "oxid-esales/oxideshop-ce": "^v7.0",
+       "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "GP\\Oxid\\IdeHelper\\": "src/"
+        }
+    }
+}
