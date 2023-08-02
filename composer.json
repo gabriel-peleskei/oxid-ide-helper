@@ -1,5 +1,5 @@
 {
-    "name": "gp/oxid-ide-helper",
+    "name": "gabriel-peleskei/oxid-ide-helper",
     "description": "Creates IDE Helper file for OXID eSales",
     "license": "MIT",
     "type": "oxideshop-component",
@@ -13,11 +13,6 @@
         "ide",
         "helper"
     ],
-    "extra": {
-        "oxideshop": {
-            "target-directory": "gp/ide-helper"
-        }
-    },
     "require": {
        "oxid-esales/oxideshop-ce": "^v7.0",
        "php": ">=8.0"
