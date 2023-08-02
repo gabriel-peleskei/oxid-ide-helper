@@ -4,7 +4,7 @@
 
 Using composer:
 ```bash
-composer require gp/oxid-ide-helper
+composer require gabriel-peleskei/oxid-ide-helper
 ```
 
 ## Usage
