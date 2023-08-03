@@ -2,22 +2,17 @@
 
 namespace GP\Oxid\IdeHelper\Command;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Chain\ClassExtensionsChainDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Path;
 
 class IdeHelper extends Command {
     protected ?int $shopId = null;
     protected InputInterface $input;
     protected OutputInterface $output;
 
-    public function __construct(
-        protected ClassExtensionsChainDaoInterface $chainProvider
-    ) {
-        parent::__construct(null);
-    }
     protected function configure() {
         $this->setName('gp:ide:helper');
         // $this->addOption('');
@@ -36,6 +31,7 @@ EOT;
         $this->setHelp($help);
         
     }
+
     
     protected function execute(InputInterface $input, OutputInterface $output) {
         $this->input = $input;
@@ -70,19 +66,33 @@ EOT;
         } 
     }
 
+    protected function getConfiguration6(int $shopId): ?array {
+        return ContainerFactory::getInstance()->getContainer()->get(ShopConfigurationDaoInterface::class)->get($shopId)->getClassExtensionsChain()->getChain();
+    }
+
     protected function getChain(int $shopId): array {
-        return $this->chainProvider->getChain($shopId)->getChain();
+        return ContainerFactory::getInstance()->getContainer()->get(ShopConfigurationDaoInterface::class)->get($shopId)->getClassExtensionsChain()->getChain();
     }
 
     protected function getModulesDir(string ... $path): string {
-        return Path::join(OX_BASE_PATH, 'modules', ...$path);
+        return implode(DIRECTORY_SEPARATOR, [OX_BASE_PATH, 'modules', ...$path]);
     }
 
     protected function getExtension(string $parent, string $new): string {
         $namespaceList = explode('\\', $new);   
         $className = array_pop($namespaceList);
         $namespace = implode('\\', $namespaceList);
-        return "namespace $namespace { class {$className}_parent extends \\$parent {} }";
+        if (false === strpos($new, '\\')) {
+            $tmp = explode('/', $new);
+            $className = array_pop($tmp);
+        }
+        if (false === strpos($parent, '\\')) {
+            $tmp = explode('/', $parent);
+            $extends = "\\" . array_pop($tmp);
+        } else {
+            $extends = "\\$parent";
+        }
+        return "namespace $namespace { class {$className}_parent extends $extends {} }";
     }
 
     protected function makeFile(array $paths, string $filePath): bool {
