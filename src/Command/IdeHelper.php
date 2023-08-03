@@ -82,7 +82,17 @@ EOT;
         $namespaceList = explode('\\', $new);   
         $className = array_pop($namespaceList);
         $namespace = implode('\\', $namespaceList);
-        return "namespace $namespace { class {$className}_parent extends \\$parent {} }";
+        if (false === strpos($new, '\\')) {
+            $tmp = explode('/', $new);
+            $className = array_pop($tmp);
+        }
+        if (false === strpos($parent, '\\')) {
+            $tmp = explode('/', $parent);
+            $extends = "\\" . array_pop($tmp);
+        } else {
+            $extends = "\\$parent";
+        }
+        return "namespace $namespace { class {$className}_parent extends $extends {} }";
     }
 
     protected function makeFile(array $paths, string $filePath): bool {
