@@ -3,7 +3,6 @@
     "description": "Creates IDE Helper file for OXID eSales",
     "license": "MIT",
     "type": "oxideshop-component",
-    "version": "6.0.0",
     "homepage": "https://github.com/gabriel-peleskei/oxid-ide-helper",
     "keywords": [
         "oxid",
