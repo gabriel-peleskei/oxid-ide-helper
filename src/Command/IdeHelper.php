@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace GP\Oxid\IdeHelper\Command;
 
@@ -8,7 +10,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Path;
 
-class IdeHelper extends Command {
+class IdeHelper extends Command
+{
     protected ?int $shopId = null;
     protected InputInterface $input;
     protected OutputInterface $output;
@@ -18,7 +21,8 @@ class IdeHelper extends Command {
     ) {
         parent::__construct(null);
     }
-    protected function configure() {
+    protected function configure()
+    {
         $this->setName('gp:ide:helper');
         // $this->addOption('');
         $this->setDescription('Create IDE-Helper file');
@@ -34,10 +38,10 @@ Basically, it is the representation of the <fg=gray>var/configuration/shops/<SHO
 EOT;
 
         $this->setHelp($help);
-        
     }
-    
-    protected function execute(InputInterface $input, OutputInterface $output) {
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $this->input = $input;
         $this->output = $output;
         $shopId = $this->getShopId();
@@ -61,25 +65,35 @@ EOT;
         return 0;
     }
 
-
-    protected function getShopId(): int {
-        try {
-            return $this->shopId ??= (int) $this->input->getOption('shop-id');
-        } catch (\InvalidArgumentException $e) {
-            return $this->shopId ??= 1;
-        } 
+    private function getDefaultShop(): int
+    {
+        $id = (int) $this->input->getOption("shop-id");
+        $id = $id <= 0 ? 1 : $id;
+        return $id;
     }
 
-    protected function getChain(int $shopId): array {
+    protected function getShopId(): int
+    {
+        try {
+            return $this->shopId ??= $this->getDefaultShop();
+        } catch (\InvalidArgumentException) {
+            return $this->shopId ??= 1;
+        }
+    }
+
+    protected function getChain(int $shopId): array
+    {
         return $this->chainProvider->getChain($shopId)->getChain();
     }
 
-    protected function getModulesDir(string ... $path): string {
+    protected function getModulesDir(string ...$path): string
+    {
         return Path::join(OX_BASE_PATH, 'modules', ...$path);
     }
 
-    protected function getExtension(string $parent, string $new): string {
-        $namespaceList = explode('\\', $new);   
+    protected function getExtension(string $parent, string $new): string
+    {
+        $namespaceList = explode('\\', $new);
         $className = array_pop($namespaceList);
         $namespace = implode('\\', $namespaceList);
         if (false === strpos($new, '\\')) {
@@ -95,7 +109,8 @@ EOT;
         return "namespace $namespace { class {$className}_parent extends $extends {} }";
     }
 
-    protected function makeFile(array $paths, string $filePath): bool {
+    protected function makeFile(array $paths, string $filePath): bool
+    {
         $contents = implode("\n", $paths);
         $result = file_put_contents($filePath, "<?php // IDE Helper for shop {$this->shopId}\n{$contents}");
         if (false === $result) {
@@ -104,3 +119,4 @@ EOT;
         return true;
     }
 }
+
