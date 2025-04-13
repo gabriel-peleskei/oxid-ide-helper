@@ -1,24 +1,24 @@
 {
-    "name": "gabriel-peleskei/oxid-ide-helper",
-    "description": "Creates IDE Helper file for OXID eSales",
-    "license": "MIT",
-    "type": "oxideshop-component",
-    "homepage": "https://github.com/gabriel-peleskei/oxid-ide-helper",
-    "keywords": [
-        "oxid",
-        "oxid-eshop",
-        "oxid-components",
-        "oxid-module",
-        "ide",
-        "helper"
-    ],
-    "require": {
-       "oxid-esales/oxideshop-ce": "^v7.0",
-       "php": ">=8.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "GP\\Oxid\\IdeHelper\\": "src/"
-        }
+  "name": "gabriel-peleskei/oxid-ide-helper",
+  "description": "Creates IDE Helper file for OXID eSales",
+  "license": "MIT",
+  "type": "oxideshop-component",
+  "homepage": "https://github.com/gabriel-peleskei/oxid-ide-helper",
+  "keywords": [
+    "oxid",
+    "oxid-eshop",
+    "oxid-components",
+    "oxid-module",
+    "ide",
+    "helper"
+  ],
+  "require": {
+    "oxid-esales/oxideshop-ce": "^v7.0",
+    "php": ">=8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "GP\\Oxid\\IdeHelper\\": "src/"
     }
+  }
 }
